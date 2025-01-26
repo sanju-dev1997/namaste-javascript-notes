@@ -165,6 +165,119 @@ Many modern systems use a hybrid approach, leveraging the benefits of both:
 
 <hr>
 
+# 1) Mark and Sweep Algorithm in Garbage Collection
+
+The Mark-and-Sweep algorithm is a common garbage collection technique used to manage memory in languages like JavaScript, Java, and others. It’s responsible for cleaning up memory that is no longer in use by the program. Here's how it works:
+
+## Steps in the Mark-and-Sweep Algorithm:
+
+### Mark Phase:
+- The garbage collector starts at root objects (objects that are directly accessible from the program’s stack or global state) and marks all reachable objects.
+- It traverses the object graph and follows all references (pointers) to other objects. Any object that is directly or indirectly referenced by a root object is marked as "live."
+
+### Sweep Phase:
+- After the mark phase, the garbage collector will traverse all objects in memory.
+- It will sweep through all objects and reclaim memory used by objects that were not marked as "live."
+- These unmarked objects are considered garbage because they are no longer reachable from the root, meaning they are no longer needed.
+
+## Advantages of Mark and Sweep:
+- Simple to implement and widely used in many programming languages.
+- Can handle complex object graphs because it works recursively.
+
+## Disadvantages:
+- The sweep phase can be time-consuming if many objects are left unmarked.
+- It can cause pauses during execution (called "stop-the-world" pauses) while the garbage collection happens.
+
+# 2) Copy Elision
+
+Copy elision is an optimization technique where the compiler removes unnecessary copies of objects, reducing the overhead of object creation and destruction.
+
+## How It Works:
+- Copy constructors or assignment operators can be expensive when objects are copied. However, sometimes these copies can be eliminated during compilation because the compiler can determine they aren't necessary.
+
+### Example (C++):
+If an object is returned from a function, the compiler can eliminate the copy by directly placing the returned object into the destination variable.
+
+```cpp
+MyObject foo() {
+    MyObject obj;
+    return obj; // Could involve unnecessary copy.
+}
+
+MyObject obj2 = foo(); // Without copy elision, obj might be copied here.
+```
+In the above case, copy elision allows the compiler to optimize the function call and avoid creating a temporary object. Instead, it can directly move the object into the destination variable. 
+
+
+## Why It's Important:
+Copy elision is a critical optimization for performance, especially in resource-intensive programs, because it avoids unnecessary memory allocations and copying.
+
+## Modern Compilers:
+C++ compilers (e.g., GCC, Clang) and modern compilers for other languages automatically apply copy elision when they can guarantee no side effects.
+
+## 3) Inlining
+
+Inlining is an optimization technique where the compiler replaces a function call with the actual body of the function, removing the overhead of making a function call.
+
+### How It Works:
+When the compiler inlines a function, instead of performing a traditional function call (which involves pushing arguments onto the stack, jumping to the function's code, and returning), it simply replaces the call with the function's body.
+
+### Example (C++):
+```cpp
+inline int add(int a, int b) {
+    return a + b;
+}
+
+int main() {
+    int result = add(2, 3); // Instead of calling add(), the body is inserted directly here.
+    return 0;
+}
+```
+In this example, the `add()` function might be replaced directly in the call site, reducing function call overhead.
+
+### Why It's Important:
+- **Improves performance** by removing function call overhead, especially for small functions that are frequently called.
+- **Helps reduce the size of the binary** (by avoiding function call stack management).
+
+### Limitations:
+- **Inlining is only beneficial for small functions.** Large functions might increase the code size unnecessarily, leading to code bloat.
+- The **compiler often makes the final decision** on whether or not to inline a function based on its size, frequency of use, and other factors.
+
+### 4) Inline Caching
+Inline caching is a technique used in Just-In-Time (JIT) compilers, commonly in dynamic languages like JavaScript, to speed up property lookups by caching the result of the lookup.
+
+#### How It Works:
+When accessing an object’s property (e.g., `obj.property`), the JavaScript engine needs to find the location of that property in the object. This is normally done via a lookup process that can be slow, especially if the object’s structure is dynamic.
+
+Inline caching speeds this process up by storing the result of the property lookup in a cache on the call site itself. The next time the same property is accessed on the same object, the engine skips the lookup and uses the cached result directly.
+
+#### Example:
+```javascript
+let obj = { x: 42 };
+console.log(obj.x);  // First lookup
+console.log(obj.x);  // Second lookup (cached)
+```
+In this example:
+- On the first access, the JavaScript engine might go through the process of finding the property `x` in the object.
+- However, on the second access, the engine can use inline caching to directly access the property without going through the full lookup process again.
+
+#### Why It's Important:
+- Speeds up property lookups significantly in dynamic languages.
+- It's particularly useful in scenarios where objects have dynamic shapes (e.g., adding properties at runtime).
+
+#### Example in JavaScript Engines:
+JavaScript engines like V8 (used in Chrome and Node.js) use inline caching to optimize property lookups and method calls.
+
+### Summary:
+- **Mark and Sweep Algorithm**: A garbage collection technique that marks live objects and sweeps away unreachable objects to reclaim memory.
+- **Copy Elision**: Compiler optimization that eliminates unnecessary object copies to improve performance.
+- **Inlining**: An optimization that replaces function calls with the actual function body to avoid call overhead.
+- **Inline Caching**: A JIT optimization technique used to speed up property lookups by caching the result of the lookup.
+
+Each of these concepts plays a significant role in improving the efficiency and performance of applications, whether at runtime (with garbage collection and inlining) or during compilation (with optimizations like copy elision and inline caching).
+
+<hr>
+
 
 Watch Live On Youtube below:
 
