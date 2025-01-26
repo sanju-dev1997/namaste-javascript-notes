@@ -68,6 +68,104 @@ JIT strikes a balance between the flexibility of interpreted languages and the p
 
 <hr>
 
+<hr>
+# AOT (Ahead-of-Time) Compilation in JavaScript
+
+AOT (Ahead-of-Time) Compilation in the context of JavaScript is less common compared to the Just-In-Time (JIT) compilation approach used by most modern JavaScript engines (e.g., V8, SpiderMonkey). However, it's worth exploring as it offers distinct advantages and is widely used in other programming languages or frameworks that compile JavaScript-like code.
+
+## What is Ahead-of-Time (AOT) Compilation?
+
+AOT compilation refers to compiling source code into machine code before runtime.  
+Unlike JIT, which compiles code during the execution of the program, AOT compiles it entirely before execution.  
+In JavaScript, AOT is generally associated with:
+
+- Pre-compilation of JavaScript into a lower-level form (e.g., WebAssembly or bytecode).
+- Frameworks and tools that convert JavaScript or higher-level languages into optimized, executable code during the build process.
+
+## Where AOT is Used in the JavaScript Ecosystem
+
+### Angular:
+- Angular uses AOT to compile templates and components into JavaScript during the build process.
+- This makes the application faster because the browser doesn't need to compile Angular templates at runtime.
+
+**Benefits of AOT in Angular:**
+- Smaller bundle size.
+- Faster application startup.
+- Detects errors at build time.
+
+### WebAssembly (WASM):
+- JavaScript can be compiled to WebAssembly, which is a low-level binary format that runs at near-native speed.
+- WebAssembly uses AOT compilation to precompile code for faster performance.
+
+### Transpilers:
+- Tools like Babel or TypeScript (with the `tsc` compiler) use AOT-like techniques to compile code into JavaScript before it's run in the browser.
+
+## Differences Between AOT and JIT
+
+| Feature               | AOT (Ahead-of-Time)                                  | JIT (Just-In-Time)                                   |
+|-----------------------|------------------------------------------------------|-----------------------------------------------------|
+| **Timing**            | Code is compiled before execution.                   | Code is compiled during execution.                  |
+| **Startup Time**      | Faster startup (no runtime compilation).             | Slower startup (compilation at runtime).            |
+| **Optimization**      | Allows deeper optimizations during build.            | Optimizations happen dynamically.                   |
+| **Flexibility**       | Requires all code to be known at build time.         | More flexible, works well with dynamic code.        |
+| **Error Detection**   | Errors are caught at compile time.                   | Errors may appear at runtime.                       |
+
+## Advantages of AOT
+
+### 1. Improved Performance:
+- Eliminates runtime compilation overhead.
+- Applications start faster and are more efficient.
+
+### 2. Error Detection at Build Time:
+- AOT compilation catches syntax or type errors before the application runs.
+
+### 3. Smaller Code Size:
+- Unused code can be removed during the build process (e.g., tree-shaking).
+
+### 4. Better Security:
+- Prevents injection attacks by compiling templates into static code (e.g., Angular).
+
+## Disadvantages of AOT
+
+### 1. Slower Build Process:
+- AOT compilation increases build time since all code is precompiled.
+
+### 2. Less Flexibility:
+- Dynamic features (like dynamically evaluating strings as code using `eval`) are harder to support with AOT.
+
+### 3. Debugging Complexity:
+- Debugging precompiled code can be challenging because the code running in the environment may differ from the original source.
+
+## How AOT and JIT Can Coexist
+
+Many modern systems use a hybrid approach, leveraging the benefits of both:
+
+- **AOT for initial compilation:** Used for predictable, static code to optimize performance and detect errors early.
+- **JIT for dynamic code:** Dynamically compiles unpredictable or frequently changing code at runtime.
+
+### For example, in JavaScript:
+- JIT is used in browsers and JavaScript engines like V8 for runtime optimizations.
+- AOT is used in frameworks (e.g., Angular) or tools (e.g., WebAssembly) for precompiling code.
+
+## When to Use AOT?
+
+- When you need faster startup times and optimized performance (e.g., Single Page Applications in production).
+- For projects where static analysis and error checking during the build phase are critical.
+- In environments with limited runtime resources (e.g., embedded systems).
+
+## Comparison of AOT Model with Angular and React
+
+| Feature               | React                                                  | Angular (AOT Mode)                                       |
+|-----------------------|--------------------------------------------------------|---------------------------------------------------------|
+| **Template Compilation** | JSX is compiled to JavaScript at build time, but actual rendering happens dynamically at runtime. | Templates are fully compiled into JavaScript during the build process. |
+| **Runtime Overhead**  | Higher: UI rendering and Virtual DOM reconciliation occur at runtime. | Lower: Precompiled templates eliminate runtime parsing. |
+| **Error Detection**   | Runtime: Many issues (like invalid props) can only be detected during runtime. | Compile Time: Errors in templates or bindings are caught at build time. |
+| **Performance**       | May be slower for first render (requires runtime template parsing and rendering). | Faster first render (precompiled templates).            |
+| **SSR Support**       | Optional, with tools like Next.js or Gatsby.           | SSR is supported but secondary to AOT.                 |
+
+<hr>
+
+
 Watch Live On Youtube below:
 
 <a href="https://www.youtube.com/watch?v=2WJL19wDH68&ab_channel=AkshaySaini" target="_blank"><img src="https://img.youtube.com/vi/2WJL19wDH68/0.jpg" width="750"
